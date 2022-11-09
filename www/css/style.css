@@ -1,0 +1,296 @@
+/*
+    1. Toolbar
+    2. fab 右下角增加按鈕
+    3. scrollbar-inner 滾動條樣式
+    4. Main container 正文內容
+    5. card
+    6. online-icon
+ */
+:root { /*參數設置*/
+    --primary-color: #ff6f00;
+    --dark-color: #232323;
+    --dark-color-light: #6c6c6c;
+    --bs-primary: var(--primary-color); !important;
+    --text-gary: #a0a0a0;
+}
+
+* {
+    -webkit-tap-highlight-color: var(--dark-color-light); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    background-color: var(--dark-color);
+    -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
+    font-family: system-ui, -apple-system, -apple-system-font, 'Microsoft JhengHei UI', 'Roboto', sans-serif;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: whitesmoke;
+    font-size: .9rem;
+}
+
+a { /*將所有超連結套用效果*/
+    text-decoration: none;
+    color: whitesmoke; !important;
+}
+
+.btn-primary { /*修改primary按鈕的顏色*/
+    background-color: var(--primary-color);
+}
+
+small { /*所有small套用效果*/
+    font-size: .7em;
+}
+
+.btn-close {
+    color: whitesmoke;
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23F5F5F5' stroke='%23F5F5F5' %3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+
+input.form-control:not([type="range"]),
+select.form-select,
+textarea.form-control { /*所有input range除外*/
+    background-color: rgba(0, 0, 0, 0);
+    border: solid var(--dark-color-light);
+    border-width: 0 0 1px 0;
+    color: whitesmoke;
+    border-radius: 0;
+}
+
+select.form-select { /*替換select background image*/
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%2300000000' stroke='%23F5F5F5' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+input:not([type="range"]):not([role="switch"]):focus,
+select.form-select:focus,
+textarea.form-control:focus{ /*所有input range除外 (聚焦狀態)*/
+    background-color: rgba(0, 0, 0, 0);
+    border: solid var(--primary-color);
+    border-width: 0 0 1px 0;
+    box-shadow: 0 0 0 0 black;
+    color: whitesmoke;
+    border-radius: 0;
+}
+
+.modal-content { /*彈出窗口*/
+    background-color: var(--dark-color);
+}
+
+.form-check-input:checked { /*切換按鈕*/
+    background-color: rgba(0, 0, 0, 0);
+    border-color: whitesmoke;
+}
+.form-check-input:focus {
+    border-color: rgba(245, 245, 245, 0.51);
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+}
+
+.toast{ /*彈出通知*/
+    background-color: var(--dark-color-light);
+    border-radius: 50px;
+    width: auto;
+}
+.toast-container{
+    z-index: 9999999;
+    bottom: 5rem
+}
+/*
+ *      1. Toolbar 頂部工具欄
+ */
+
+.toolbar {
+    background-color: var(--primary-color);
+    width: 100%;
+    height: 2.8rem;
+}
+@media (min-width: 576px){ /*當闊度大於576px套用以下效果(打橫手機)*/
+    .toolbar{
+        height: 2.3rem;
+    }
+}
+
+.toolbar i + i{ /* 相鄰icon */
+    padding-left: 1.2rem;
+}
+
+.toolbar i{ /* icon */
+    font-size: 1.2em;
+}
+
+.toolbar .toolbar-text{ /*toolbar的文字*/
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+/*
+ *      2. fab 右下角增加按鈕
+ */
+.fab {
+    width: 57px;
+    height: 57px;
+    position: fixed;
+    background-color: var(--primary-color);
+    border-radius: 100%;
+    bottom: 4rem;
+    right: 1rem;
+    z-index: 100;
+}
+
+.fab div{ /*按鈕大細*/
+    width: 100%;
+    height: 100%;
+}
+
+.fab div > span, i{ /*按鈕icon*/
+    text-align: center;
+    font-size: 1em;
+    color: #f2f2f2;
+    font-weight: bold;
+}
+
+/*
+ *      3. scrollbar-inner 滾動條樣式
+ */
+.scrollbar-inner > .scroll-element,
+.scrollbar-inner > .scroll-element div
+{
+    border: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 10;
+}
+
+.scrollbar-inner > .scroll-element div {
+    display: block;
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.scrollbar-inner > .scroll-element.scroll-x {
+    bottom: 2px;
+    height: 8px;
+    left: 0;
+    width: 100%;
+}
+
+.scrollbar-inner > .scroll-element.scroll-y {
+    height: 100%;
+    right: 2px;
+    top: 0;
+    width: 2px;
+}
+
+.scrollbar-inner > .scroll-element .scroll-element_outer {
+    overflow: hidden;
+}
+
+.scrollbar-inner > .scroll-element .scroll-element_outer,
+.scrollbar-inner > .scroll-element .scroll-element_track,
+.scrollbar-inner > .scroll-element .scroll-bar {
+    border-radius: 2px;
+}
+
+.scrollbar-inner > .scroll-element .scroll-element_track,
+.scrollbar-inner > .scroll-element .scroll-bar {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+    filter: alpha(opacity=40);
+    opacity: 0.4;
+}
+
+.scrollbar-inner > .scroll-element .scroll-element_track {
+    background-color: rgba(224, 224, 224, 0);
+}
+
+.scrollbar-inner > .scroll-element .scroll-bar {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.scrollbar-inner > .scroll-element:hover .scroll-bar {
+    background-color: rgb(255, 255, 255);
+}
+
+.scrollbar-inner > .scroll-element.scroll-draggable .scroll-bar {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* update scrollbar offset if both scrolls are visible */
+.scrollbar-inner > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_track {
+    left: -12px;
+}
+
+.scrollbar-inner > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_track {
+    top: -12px;
+}
+
+.scrollbar-inner > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_size {
+    left: -12px;
+}
+
+.scrollbar-inner > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_size {
+    top: -12px;
+}
+
+/*
+ *      4. Main container 正文內容
+ */
+.main-container {
+    height: calc(100% - 2.8rem);
+}
+
+@media (min-width: 576px) {
+    /*當闊度大於576px套用以下效果(打橫手機)*/
+    .main-container {
+        height: calc(100% - 2.3rem);
+    }
+}
+
+/*
+    5. card
+ */
+.card{
+    margin-top: 1rem;
+    background-color: #3b3b3b;
+    border-radius: 20px;
+}
+
+.card .card-title{
+    font-weight: bold;
+}
+
+.card hr{
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.card .card-text,
+small{
+    color: var(--text-gary);
+}
+
+/*
+    6. online-icon
+ */
+.online-icon{
+    font-size: 1.5em;
+}
+
+.online-icon.online{
+    color: #18c248;
+}
+
+.online-icon.offline{
+    color: #d72222;
+}
+
+/*
+    7. detail-link
+ */
+.detail-link>i{
+    color: var(--text-gary);
+    font-size: 2em;
+}

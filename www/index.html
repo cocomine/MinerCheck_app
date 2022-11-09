@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="utf-8">
+    <!--
+    Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
+        https://cordova.apache.org/docs/en/latest/
+    Some notes:
+        * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+        * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+            * Enable inline JS: add 'unsafe-inline' to default-src
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src 'self'; img-src 'self' data: content:; script-src 'self' 'unsafe-inline'; connect-src *">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/jquery.scrollbar.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Miner Check</title>
+</head>
+<body>
+
+<div class="fab shadow">
+    <a href="#" aria-label="增加URL" id="add-url">
+        <div class="row justify-content-center align-items-center g-0">
+            <span class="ti-plus"></span>
+        </div>
+    </a>
+</div>
+
+<!--頂部toolbar-->
+<div class="shadow sticky-top" id="toolbar">
+    <div class="toolbar">
+        <div class="container-fluid h-100">
+            <div class="row justify-content-between align-items-center h-100">
+                <div class="col-auto"><span class="toolbar-text">礦機狀態</span></div>
+                <div class="col-auto">
+                    <div class="row align-items-center">
+                        <div class="form-check form-switch col-auto mt-1">
+                            <input class="form-check-input" type="checkbox" role="switch" id="showMore">
+                            <label class="form-check-label" for="showMore">顯示詳細</label>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa fa-refresh fa-spin" aria-label="更新狀態" id="reload"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Content-->
+<div class="main-container scrollbar-inner">
+    <div class="container-fluid">
+        <div class="row" id="Content">
+
+        </div>
+    </div>
+</div>
+
+<!--toast-->
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-absolute p-3 start-50 translate-middle-x">
+
+    </div>
+</div>
+
+<!--修改ip-->
+<div class="modal fade" tabindex="-1" id="editModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">修改礦機</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="取消修改"></button>
+            </div>
+            <form class="needs-validation" novalidate id="editForm">
+                <div class="modal-body row g-3">
+                    <div class="col-12">
+                        <label for="editForm-url" class="form-label">新的礦機IP位置</label>
+                        <input class="form-control" type="text" id="editForm-url" name="editForm-url" placeholder="0.0.0.0:00 (留空不更改)" pattern="^(([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{2,5})$|^[0-9]{0}$">
+                        <div class="invalid-feedback">
+                            格式不符合
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-12">
+                        <label for="editForm-miner" class="form-label">詳細資訊檢查</label>
+                        <select class="form-select" id="editForm-miner" name="editForm-miner" required>
+                            <option value="0" selected>不檢查</option>
+                            <option value="1">T-rex</option>
+                            <option value="2">NBMiner</option>
+                            <option value="3">lolMiner</option>
+                            <option value="4">GMiner</option>
+                        </select>
+                        <div class="form-text">
+                            請選擇, 偵測目標的對應軟件內核
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-12" id="editForm-pass-col" style="display: none">
+                        <label for="editForm-pass" class="form-label">登入密碼</label>
+                        <input class="form-control" type="password" id="editForm-pass" name="editForm-pass" placeholder="(留空不更改)">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-url="0.0.0.0:00">修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--添加IP-->
+<div class="modal fade" tabindex="-1" id="addModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">添加礦機</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="取消添加"></button>
+            </div>
+            <form class="needs-validation" novalidate id="addForm">
+                <div class="modal-body row g-3">
+                    <div class="col-12">
+                        <label for="addForm-url" class="form-label">要監控的礦機IP位置</label>
+                        <input class="form-control" type="text" id="addForm-url" name="addForm-url" placeholder="127.0.0.1:4000" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{2,5}$" required>
+                        <div class="invalid-feedback">
+                            格式不符合
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--登入密碼-->
+<div class="modal fade" tabindex="-1" id="loginModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">添加礦機</h5>
+            </div>
+            <form class="needs-validation" novalidate id="loginForm">
+                <div class="modal-body row g-3">
+                    <div class="col-12">
+                        <label for="loginForm-pass" class="form-label">密碼</label>
+                        <input class="form-control" type="password" id="loginForm-pass" name="loginForm-pass"  required>
+                        <div class="invalid-feedback">
+                            請輸入密碼
+                        </div>
+                    </div>
+                    <div class="col-12" style="display: none; -webkit-user-select: text;" id="api-key">
+                        <p>請將下方文字貼在<code>config.inc.php</code>裏的<code>API_KEY</code></p>
+                        <code id="code" class="bg-light"></code>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" id="gen-pass">產生密碼</button>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--刪除ip-->
+<div class="modal fade" tabindex="-1" id="delModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">移除礦機</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="取消移除"></button>
+            </div>
+            <form class="needs-validation" novalidate id="delForm">
+                <div class="modal-body row g-3">
+                    <div class="col-12">
+                        <p>確認要移除 <b><span id="delForm-url"></span></b> ?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">移除</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="cordova.js"></script>
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery.scrollbar.min.js"></script>
+<script src="js/forge.min.js"></script>
+<script src="js/AEScrypt.js"></script>
+<script src="js/config.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

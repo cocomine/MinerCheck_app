@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.cocomine.minercheck" version="0.0.5" android-versionCode="5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="schemas.android.com/apk/res/android">
+    <name>Miner Check</name>
+    <description>檢查礦機在線狀態</description>
+    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
+        Apache Cordova Team
+    </author>
+    <author email="roguish.6888467468@gmail.com" href="https://www.facebook.com/profile.php?id=100006297815529">
+        Cocomine
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <platform name="android">
+        <allow-intent href="market:*"/>
+        <preference name="AndroidXEnabled" value="true"/>
+        <preference name="JetifierEnabled" value="true"/>
+        <preference name="StatusBarOverlaysWebView" value="false"/>
+        <preference name="android-minSdkVersion" value="29"/>
+        <resource-file src="src/google-services.json" target="app/google-services.json" />
+        <resource-file src="src/drawable/drawable-anydpi-v24/notification_icons.xml" target="app/src/main/res/drawable-anydpi-v24/notification_icons.xml" />
+        <resource-file src="src/drawable/drawable-hdpi/notification_icons.png" target="app/src/main/res/drawable-hdpi/notification_icons.png" />
+        <resource-file src="src/drawable/drawable-mdpi/notification_icons.png" target="app/src/main/res/drawable-mdpi/notification_icons.png" />
+        <resource-file src="src/drawable/drawable-xhdpi/notification_icons.png" target="app/src/main/res/drawable-xhdpi/notification_icons.png" />
+        <resource-file src="src/drawable/drawable-xxhdpi/notification_icons.png" target="app/src/main/res/drawable-xxhdpi/notification_icons.png" />
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/notification_icons" />
+            <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:value="0"/>
+        </config-file>
+    </platform>
+    <preference name="StatusBarBackgroundColor" value="#ff6f00" />
+</widget>
